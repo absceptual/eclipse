@@ -18,6 +18,18 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\directx\dx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hooks\hooks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\directx\drawing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hacks\esp\esp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sdk\entity.h">
@@ -30,6 +42,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sdk\netvars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\directx\drawing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\directx\dx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hooks\hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hacks\esp\esp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

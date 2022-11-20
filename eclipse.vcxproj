@@ -19,9 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\hacks\esp\esp.cpp" />
+    <ClCompile Include="src\directx\drawing.cpp" />
+    <ClCompile Include="src\directx\dx.cpp" />
+    <ClCompile Include="src\hooks\hooks.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\hacks\esp\esp.h" />
+    <ClInclude Include="src\directx\drawing.h" />
+    <ClInclude Include="src\directx\dx.h" />
+    <ClInclude Include="src\hooks\hooks.h" />
     <ClInclude Include="src\sdk\entity.h" />
     <ClInclude Include="src\sdk\globals.h" />
     <ClInclude Include="src\sdk\interface.h" />
@@ -79,6 +87,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -121,9 +145,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;ECLIPSE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(DXSDK_DIR)Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,9 +164,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;ECLIPSE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(DXSDK_DIR)Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

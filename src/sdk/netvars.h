@@ -89,10 +89,10 @@ public:
 
 namespace netvars
 {
-    std::unordered_map<uint32_t, size_t> offsets{ };
+    inline std::unordered_map<uint32_t, size_t> offsets{ };
 
-    void dump();
-    void get_offsets(RecvTable* table, const char* table_name);
+    inline void dump();
+    inline void get_offsets(RecvTable* table, const char* table_name);
 }
 
 void netvars::dump()

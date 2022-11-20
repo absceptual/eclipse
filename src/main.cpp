@@ -5,7 +5,11 @@
 
 // Windows and other external headers
 #include <Windows.h>
-#include "sdk/entity.h"
+#include "sdk/globals.h"
+
+#include "hooks/hooks.h"
+
+#pragma warning(disable : 26495)
 
 inline FILE* startup()
 {
@@ -28,22 +32,51 @@ inline DWORD cleanup(HMODULE mod, FILE* output)
 DWORD __stdcall entry_point(HMODULE mod)
 {
 	auto output = startup();
-	auto entitylist = interfaces::get<IClientEntityList>("client.dll", "VClientEntityList003");
 
+	globals::update();
 	netvars::dump();
-	printf("[+] dumped netvars!\n");
+
+
+	if (dx::get_d3d9_device(dx::vmt, sizeof(dx::vmt))) 
+	{
+		memcpy(hooks::o_endscene_bytes, dx::vmt[42], 7);
+		hooks::o_endscene = reinterpret_cast<dx::endscene_t>(hooks::trampoline_32(dx::vmt[42], hooks::hk_endscene, 7));
+	}
 
 	while (!GetAsyncKeyState(VK_END) & 1)
 	{	
-		auto entity = reinterpret_cast<CEntity*>(entitylist->GetClientEntity(2));
-		if (entity)
-			printf("[?] entity 2 health: %d\n", entity->health());
+		if (GetAsyncKeyState(VK_F1) & 1)
+			settings::esp_enabled = !settings::esp_enabled;
 
-			
+		if (GetAsyncKeyState(VK_F2) & 1)
+			settings::teammates = !settings::teammates;
 
+		if (GetAsyncKeyState(VK_F3) & 1)
+			settings::snaplines = !settings::snaplines;
+
+		if (GetAsyncKeyState(VK_F4) & 1)
+			settings::s_box = !settings::s_box;
+
+		if (GetAsyncKeyState(VK_F5) & 1)
+			settings::box = !settings::box;
+
+		if (GetAsyncKeyState(VK_F8) & 1)
+			settings::snap_from = esp::snap_from::bottom;
+
+		if (GetAsyncKeyState(VK_F9) & 1)
+			settings::snap_from = esp::snap_from::top;
+
+		if (GetAsyncKeyState(VK_F6) & 1)
+			settings::snap_to = esp::snap_to::head;
+
+		if (GetAsyncKeyState(VK_F7) & 1)
+			settings::snap_to = esp::snap_to::origin;
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
+
+	if (dx::vmt)
+		hooks::patch(hooks::o_endscene_bytes, reinterpret_cast<uintptr_t*>(dx::vmt[42]), 7);
 
 	return cleanup(mod, output);
 }

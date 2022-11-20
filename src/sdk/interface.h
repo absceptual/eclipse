@@ -1,6 +1,14 @@
 #pragma once
 #include <Windows.h>
 
+#define MAXSTUDIOBONES		128
+
+#define BONE_USED_MASK				0x0007FF00
+#define BONE_USED_BY_ANYTHING		0x0007FF00
+#define BONE_USED_BY_HITBOX			0x00000100
+#define BONE_USED_BY_VERTEX_AT_LOD(lod) ( BONE_USED_BY_VERTEX_LOD0 << (lod) )
+#define BONE_USED_BY_ANYTHING_AT_LOD(lod) ( ( BONE_USED_BY_ANYTHING & ~BONE_USED_BY_VERTEX_MASK ) | BONE_USED_BY_VERTEX_AT_LOD(lod) )
+
 class IBaseClientDLL
 {
 public:
@@ -52,6 +60,51 @@ public:
     virtual void                SetMaxEntities(int maxents) = 0;
     virtual int                    GetMaxEntities() = 0;
 };
+
+class IClientRenderable
+{
+public:
+    // Gets at the containing class...
+    virtual void* GetIClientUnknown() = 0;
+
+    // Data accessors
+    virtual void GetRenderOrigin(void) = 0;
+    virtual void GetRenderAngles(void) = 0;
+    virtual bool					ShouldDraw(void) = 0;
+    virtual bool					IsTransparent(void) = 0;
+    virtual bool					UsesPowerOfTwoFrameBufferTexture() = 0;
+    virtual bool					UsesFullFrameBufferTexture() = 0;
+
+    virtual void	GetShadowHandle() const = 0;
+
+    // Used by the leaf system to store its render handle.
+    virtual void RenderHandle() = 0;
+
+    // Render baby!
+    virtual const void* GetModel() const = 0;
+    virtual int						DrawModel(int flags) = 0;
+
+    // Get the body parameter
+    virtual int		GetBody() = 0;
+
+    // Determine alpha and blend amount for transparent objects based on render state info
+    virtual void	ComputeFxBlend() = 0;
+    virtual int		GetFxBlend(void) = 0;
+
+    // Determine the color modulation amount
+    virtual void	GetColorModulation(float* color) = 0;
+
+    // Returns false if the entity shouldn't be drawn due to LOD. 
+    // (NOTE: This is no longer used/supported, but kept in the vtable for backwards compat)
+    virtual bool	LODTest() = 0;
+
+    // Call this to get the current bone transforms for the model.
+    // currentTime parameter will affect interpolation
+    // nMaxBones specifies how many matrices pBoneToWorldOut can hold. (Should be greater than or
+    // equal to studiohdr_t::numbones. Use MAXSTUDIOBONES to be safe.)
+    virtual bool	SetupBones(void* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime) = 0;
+};
+
 
 using createinterface_t = void* (__cdecl*)(const char* interface_name, int* return_value);
 
